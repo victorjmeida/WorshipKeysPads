@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		92B563322DC9D6B300488DC8 /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92B563312DC9D6B300488DC8 /* Pads */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9227F6182DA8A67F0020FCF2 /* WorshipKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorshipKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		92B563312DC9D6B300488DC8 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +50,7 @@
 		9227F60F2DA8A67F0020FCF2 = {
 			isa = PBXGroup;
 			children = (
+				92B563312DC9D6B300488DC8 /* Pads */,
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
 				9227F6192DA8A67F0020FCF2 /* Products */,
 			);
@@ -122,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92B563322DC9D6B300488DC8 /* Pads in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

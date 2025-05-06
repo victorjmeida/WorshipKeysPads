@@ -48,6 +48,23 @@ class MainPadView: UIView {
         addSubview(cutControlStackView)
     }
     
+    func setupButtonTargets(target: Any?, toneAction: Selector, padAction: Selector) {
+        for row in tonesStackView.arrangedSubviews {
+            if let stack = row as? UIStackView {
+                for case let button as UIButton in stack.arrangedSubviews {
+                    button.addTarget(target, action: toneAction, for: .touchUpInside)
+                }
+            }
+        }
+        
+        for container in padStackView.arrangedSubviews {
+            if let stack = container as? UIStackView,
+               let button = stack.arrangedSubviews.first as? UIButton {
+                button.addTarget(target, action: padAction, for: .touchUpInside)
+            }
+        }
+    }
+    
     //MARK: Components
     //PLAYINGBAR
     private func setupPadPlayingBar() {
@@ -182,6 +199,22 @@ class MainPadView: UIView {
         // Adiciona os dois ao stack principal
         cutControlStackView.addArrangedSubview(highCutStack)
         cutControlStackView.addArrangedSubview(lowCutStack)
+    }
+    
+    //Reposta visual Pads tocando
+    func highlightButton(_ button: UIButton?) {
+        guard let button = button else { return }
+        button.backgroundColor = UIColor.systemTeal.withAlphaComponent(0.8)
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowRadius = 6
+        button.layer.shadowOpacity = 0.3
+    }
+
+    func resetButtonAppearance(_ button: UIButton?) {
+        guard let button = button else { return }
+        button.backgroundColor = UIColor(named: "toneBackground") ?? .darkGray
+        button.layer.shadowOpacity = 0
     }
     
     //MARK: Constrains
