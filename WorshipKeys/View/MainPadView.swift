@@ -15,10 +15,10 @@ class MainPadView: UIView {
     private let padScrollView = UIScrollView()
     private let padStackView = UIStackView()
     private let cutControlStackView = UIStackView()
-    private let highCutLabel = UILabel()
-    private let highCutSlider = UISlider()
-    private let lowCutLabel = UILabel()
-    private let lowCutSlider = UISlider()
+    let highCutLabel = UILabel()
+    let highCutSlider = UISlider()
+    let lowCutLabel = UILabel()
+    let lowCutSlider = UISlider()
     
     //MARK: - INIT
     override init(frame: CGRect) {
@@ -112,7 +112,6 @@ class MainPadView: UIView {
         button.tag = tag
         return button
     }
-
     
     //STYLES
     private func setupPadButtons() {
@@ -164,7 +163,7 @@ class MainPadView: UIView {
     }
     
     //CUTS
-    private func setupCutControls() {
+    func setupCutControls() {
         cutControlStackView.axis = .vertical
         cutControlStackView.spacing = 24
         cutControlStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -174,8 +173,9 @@ class MainPadView: UIView {
         highCutLabel.textColor = .white
         highCutLabel.font = .systemFont(ofSize: 16, weight: .medium)
         
-        highCutSlider.minimumValue = 0
-        highCutSlider.maximumValue = 100
+        highCutSlider.minimumValue = 5000
+        highCutSlider.maximumValue = 20000
+        highCutSlider.value = 2000
         highCutSlider.tintColor = .systemTeal
         
         //LOWCUT
@@ -183,8 +183,9 @@ class MainPadView: UIView {
         lowCutLabel.textColor = .white
         lowCutLabel.font = .systemFont(ofSize: 16, weight: .medium)
         
-        lowCutSlider.minimumValue = 0
-        lowCutSlider.maximumValue = 100
+        lowCutSlider.minimumValue = 20
+        lowCutSlider.maximumValue = 500
+        lowCutSlider.value = 20
         lowCutSlider.tintColor = .systemOrange
         
         // Agrupar cada controle em uma stack horizontal

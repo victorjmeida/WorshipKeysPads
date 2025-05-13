@@ -5,9 +5,8 @@
 //  Created by João VIctir da Silva Almeida on 06/05/25.
 //
 
-enum Tone: String, CaseIterable {
-    case C, CSharp = "C#", D, DSharp = "D#", E, F
-    case FSharp = "F#", G, GSharp = "G#", A, ASharp = "A#", B
+enum Tone: CaseIterable {
+    case C, CSharp, D, DSharp, E, F, FSharp, G, GSharp, A, ASharp, B
 
     var displayName: String {
         switch self {
@@ -16,11 +15,10 @@ enum Tone: String, CaseIterable {
         case .FSharp: return "F♯"
         case .GSharp: return "G♯"
         case .ASharp: return "A♯"
-        default: return self.rawValue
+        default: return String(describing: self)
         }
     }
 
-    /// Nome do arquivo (sem `#`)
     var fileName: String {
         switch self {
         case .CSharp: return "CSharp"
@@ -28,7 +26,7 @@ enum Tone: String, CaseIterable {
         case .FSharp: return "FSharp"
         case .GSharp: return "GSharp"
         case .ASharp: return "ASharp"
-        default: return self.rawValue
+        default: return String(describing: self)
         }
     }
 }

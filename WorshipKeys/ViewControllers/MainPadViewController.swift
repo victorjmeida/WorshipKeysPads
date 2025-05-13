@@ -5,91 +5,157 @@
 //  Created by João VIctir da Silva Almeida on 10/04/25.
 //
 
-import AVFoundation
 import UIKit
+import AVFoundation
 
 class MainPadViewController: UIViewController {
     
     private var selectedTone: Tone?
     private var selectedPadStyle: PadStyle?
-    private var audioPlayer: AVAudioPlayer?
     private var selectedToneButton: UIButton?
     private var selectedPadButton: UIButton?
     
-    //Conectando a ViewController
     private let mainView = MainPadView()
+    
+    private let audioEngine = AVAudioEngine()
+    private let playerNode = AVAudioPlayerNode()
+    private let eq = AVAudioUnitEQ(numberOfBands: 2)
+
+    private var currentBuffer: AVAudioPCMBuffer?
+
     override func loadView() {
         self.view = mainView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainView.setupButtonTargets(target: self,
-        toneAction: #selector(toneTapped(_:)),
-        padAction: #selector(padTapped(_:)))
-    }
-    
-    @objc private func toneTapped(_ sender: UIButton) {
-            let tappedTone = Tone.allCases[sender.tag]
-
-            if selectedTone == tappedTone {
-                selectedTone = nil
-                mainView.resetButtonAppearance(selectedToneButton)
-                selectedToneButton = nil
-                stopAudio()
-            } else {
-                selectedTone = tappedTone
-                mainView.resetButtonAppearance(selectedToneButton)
-                mainView.highlightButton(sender)
-                selectedToneButton = sender
-            }
-
-            tryPlayAudio()
-        }
-
-        @objc private func padTapped(_ sender: UIButton) {
-            let tappedStyle = PadStyle.allCases[sender.tag]
-
-            if selectedPadStyle == tappedStyle {
-                selectedPadStyle = nil
-                mainView.resetButtonAppearance(selectedPadButton)
-                selectedPadButton = nil
-                stopAudio()
-            } else {
-                selectedPadStyle = tappedStyle
-                mainView.resetButtonAppearance(selectedPadButton)
-                mainView.highlightButton(sender)
-                selectedPadButton = sender
-            }
-
-            tryPlayAudio()
-        }
-    
-    private func stopAudio() {
-        audioPlayer?.stop()
-        audioPlayer = nil
-    }
         
-    private func tryPlayAudio() {
-        guard let tone = selectedTone, let style = selectedPadStyle else { return }
-        playPad(tone: tone, style: style)
+        mainView.setupButtonTargets(
+            target: self,
+            toneAction: #selector(toneTapped(_:)),
+            padAction: #selector(padTapped(_:))
+        )
+        
+        setupEQ()
+        setupSliderActions()
     }
 
-    private func playPad(tone: Tone, style: PadStyle) {
-        let fileName = "\(tone.fileName)_\(style.rawValue)"
-        let pathInBundle = "Pads/\(style.rawValue)/\(fileName).caf"
-        let fileURL = Bundle.main.bundleURL.appendingPathComponent(pathInBundle)
+    private func setupEQ() {
+        eq.globalGain = 0
 
-        guard FileManager.default.fileExists(atPath: fileURL.path) else {
+        let lowCut = eq.bands[0]
+        lowCut.filterType = .highPass
+        lowCut.frequency = 20
+        lowCut.bandwidth = 0.5
+        lowCut.bypass = false
+
+        let highCut = eq.bands[1]
+        highCut.filterType = .lowPass
+        highCut.frequency = 20000
+        highCut.bandwidth = 0.5
+        highCut.bypass = false
+
+        audioEngine.attach(playerNode)
+        audioEngine.attach(eq)
+        audioEngine.connect(playerNode, to: eq, format: nil)
+        audioEngine.connect(eq, to: audioEngine.mainMixerNode, format: nil)
+
+        try? audioEngine.start()
+    }
+
+    private func setupSliderActions() {
+        mainView.highCutSlider.addTarget(self, action: #selector(highCutChanged(_:)), for: .valueChanged)
+        mainView.lowCutSlider.addTarget(self, action: #selector(lowCutChanged(_:)), for: .valueChanged)
+    }
+
+    @objc private func highCutChanged(_ sender: UISlider) {
+        eq.bands[1].frequency = sender.value
+    }
+
+    @objc private func lowCutChanged(_ sender: UISlider) {
+        eq.bands[0].frequency = sender.value
+    }
+
+    @objc private func toneTapped(_ sender: UIButton) {
+        let tappedTone = Tone.allCases[sender.tag]
+
+        if selectedTone == tappedTone {
+            selectedTone = nil
+            mainView.resetButtonAppearance(selectedToneButton)
+            selectedToneButton = nil
+            stopAudio()
+        } else {
+            selectedTone = tappedTone
+            mainView.resetButtonAppearance(selectedToneButton)
+            mainView.highlightButton(sender)
+            selectedToneButton = sender
+        }
+
+        tryPlayAudio()
+    }
+
+    @objc private func padTapped(_ sender: UIButton) {
+        let tappedStyle = PadStyle.allCases[sender.tag]
+
+        if selectedPadStyle == tappedStyle {
+            selectedPadStyle = nil
+            mainView.resetButtonAppearance(selectedPadButton)
+            selectedPadButton = nil
+            stopAudio()
+        } else {
+            selectedPadStyle = tappedStyle
+            mainView.resetButtonAppearance(selectedPadButton)
+            mainView.highlightButton(sender)
+            selectedPadButton = sender
+        }
+
+        tryPlayAudio()
+    }
+
+    private func tryPlayAudio() {
+        guard let tone = selectedTone, let style = selectedPadStyle else {
+            stopAudio()
             return
         }
 
+        playPad(tone: tone, style: style)
+    }
+
+    private func stopAudio() {
+        if playerNode.engine != nil && playerNode.isPlaying {
+            playerNode.stop()
+        }
+        currentBuffer = nil
+    }
+
+    private func playPad(tone: Tone, style: PadStyle) {
+        stopAudio()
+
+        let fileName = "\(tone.fileName)_\(style.rawValue)"
+        let path = "Pads/\(style.rawValue)/\(fileName).caf"
+        let fileURL = Bundle.main.bundleURL.appendingPathComponent(path)
+
+        guard FileManager.default.fileExists(atPath: fileURL.path) else { return }
+
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
-            audioPlayer?.numberOfLoops = -1
-            audioPlayer?.play()
+            let audioFile = try AVAudioFile(forReading: fileURL)
+            guard let format = AVAudioFormat(commonFormat: .pcmFormatFloat32,
+                                             sampleRate: audioFile.fileFormat.sampleRate,
+                                             channels: audioFile.fileFormat.channelCount,
+                                             interleaved: false) else { return }
+
+            let frameCount = AVAudioFrameCount(audioFile.length)
+            let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount)!
+            try audioFile.read(into: buffer)
+
+            currentBuffer = buffer
+            playerNode.scheduleBuffer(buffer, at: nil, options: .loops)
+            playerNode.volume = 0.1
+            playerNode.play()
+
         } catch {
             // Silenciado
         }
     }
 }
+
