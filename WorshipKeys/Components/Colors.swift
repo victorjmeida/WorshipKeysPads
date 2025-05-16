@@ -10,24 +10,25 @@ import UIKit
 enum Colors {
 
     //Background
-    static let background = UIColor(hex: "#0C0C0C")
+    static let background = UIColor(hexCode: "#0C0C0C") ?? .black
     
     //Highlights
-    static let primaryHighlight = UIColor(hex: "#FF6A00")
-    static let secondaryHighlight = UIColor(hex: "#F2789F")
+    static let primaryHighlight = UIColor(hexCode: "#FF6A00") ?? .orange
+    static let secondaryHighlight = UIColor(hexCode: "#F2789F") ?? .systemPink
     
     //Text
-    static let primaryText = UIColor(hex: "#F2F2F2")
+    static let primaryText = UIColor(hexCode: "#F2F2F2") ?? .white
     
     //Controls
-    static let sliderTrack = UIColor(hex: "#444444")
+    static let sliderTrack = UIColor(hexCode: "#444444") ?? .darkGray
 }
 
+
 extension UIColor {
-    convenience init(hex: String, alpha: CGFloat = 1.0) {
-        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    convenience init?(hexCode: String, alpha: CGFloat = 1.0) {
+        var hexSanitized = hexCode.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
-        if hexSanitized.hasPrefix("#"){
+        if hexSanitized.hasPrefix("#") {
             hexSanitized.remove(at: hexSanitized.startIndex)
         }
         
@@ -41,11 +42,28 @@ extension UIColor {
             g = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
             b = CGFloat(rgb & 0x0000FF) / 255.0
         default:
-            r = 0
-            g = 0
-            b = 0
+            return nil
         }
-    
-    self.init(red: r, green: g, blue: b, alpha: alpha)
+        
+        self.init(red: r, green: g, blue: b, alpha: alpha)
     }
 }
+
+extension UIColor {
+    func blended(with color: UIColor, fraction: CGFloat) -> UIColor {
+        var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0, a1: CGFloat = 0
+        var r2: CGFloat = 0, g2: CGFloat = 0, b2: CGFloat = 0, a2: CGFloat = 0
+        
+        self.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        color.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+        
+        let r = r1 + (r2 - r1) * fraction
+        let g = g1 + (g2 - g1) * fraction
+        let b = b1 + (b2 - b1) * fraction
+        let a = a1 + (a2 - a1) * fraction
+        
+        return UIColor(red: r, green: g, blue: b, alpha: a)
+    }
+}
+
+

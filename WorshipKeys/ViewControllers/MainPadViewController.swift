@@ -43,18 +43,22 @@ class MainPadViewController: UIViewController {
     private func setupEQ() {
         eq.globalGain = 0
 
+        // LOW CUT (corta subgraves - deixa o som mais limpo)
         let lowCut = eq.bands[0]
         lowCut.filterType = .highPass
-        lowCut.frequency = 20
-        lowCut.bandwidth = 0.5
+        lowCut.frequency = 80
+        lowCut.bandwidth = 0.6
         lowCut.bypass = false
 
+        // HIGH SHELF (suaviza agudos sem cortar tudo)
         let highCut = eq.bands[1]
-        highCut.filterType = .lowPass
-        highCut.frequency = 20000
-        highCut.bandwidth = 0.5
+        highCut.filterType = .highShelf
+        highCut.frequency = 6000
+        highCut.gain = 0
+        highCut.bandwidth = 0.7
         highCut.bypass = false
 
+        // Conectar nós do AVAudioEngine
         audioEngine.attach(playerNode)
         audioEngine.attach(eq)
         audioEngine.connect(playerNode, to: eq, format: nil)
@@ -68,12 +72,12 @@ class MainPadViewController: UIViewController {
         mainView.lowCutSlider.addTarget(self, action: #selector(lowCutChanged(_:)), for: .valueChanged)
     }
 
-    @objc private func highCutChanged(_ sender: UISlider) {
-        eq.bands[1].frequency = sender.value
-    }
-
     @objc private func lowCutChanged(_ sender: UISlider) {
-        eq.bands[0].frequency = sender.value
+        eq.bands[0].frequency = Float(sender.value)
+    }
+    
+    @objc private func highCutChanged(_ sender: UISlider) {
+        eq.bands[1].gain = Float(sender.value)
     }
 
     @objc private func toneTapped(_ sender: UIButton) {
@@ -102,11 +106,15 @@ class MainPadViewController: UIViewController {
             mainView.resetButtonAppearance(selectedPadButton)
             selectedPadButton = nil
             stopAudio()
+            
+            mainView.updatePadPlayingBarColor(for: nil)
         } else {
             selectedPadStyle = tappedStyle
             mainView.resetButtonAppearance(selectedPadButton)
             mainView.highlightButton(sender)
             selectedPadButton = sender
+            
+            mainView.updatePadPlayingBarColor(for: tappedStyle)
         }
 
         tryPlayAudio()
