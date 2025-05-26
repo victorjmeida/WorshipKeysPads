@@ -10,16 +10,18 @@ import UIKit
 class MainPadView: UIView {
     
     //MARK: - UIElements
-    private let padPlayingBar = UIView()
-    private let tonesStackView = UIStackView()
-    private let padScrollView = UIScrollView()
-    private let padStackView = UIStackView()
-    private let cutControlStackView = UIStackView()
+    let padPlayingBar = UIView()
+    let tonesStackView = UIStackView()
+    let padScrollView = UIScrollView()
+    let padStackView = UIStackView()
+    let cutControlStackView = UIStackView()
     let highCutLabel = UILabel()
     let highCutSlider = UISlider()
     let lowCutLabel = UILabel()
     let lowCutSlider = UISlider()
-    private let defaultToneButtonColor = UIColor(hex: "#505050")
+    var toneButtons: [UIButton] = []
+    var padButtons: [UIButton] = []
+    let defaultToneButtonColor = UIColor(hex: "#505050")
     
     //MARK: - INIT
     override init(frame: CGRect) {
@@ -64,9 +66,9 @@ class MainPadView: UIView {
                 let mixedColor = baseColor.blended(with: styleColor, fraction: 1.0)
                 self.padPlayingBar.backgroundColor = mixedColor
                 self.padPlayingBar.layer.shadowColor = styleColor.cgColor
-                self.padPlayingBar.layer.shadowOffset = CGSize(width: 0, height: 6)
-                self.padPlayingBar.layer.shadowRadius = 6
-                self.padPlayingBar.layer.shadowOpacity = 0.6
+                self.padPlayingBar.layer.shadowOffset = CGSize(width: 0, height: 8)
+                self.padPlayingBar.layer.shadowRadius = 8
+                self.padPlayingBar.layer.shadowOpacity = 0.7
             } else {
                 self.padPlayingBar.backgroundColor = baseColor
                 self.padPlayingBar.layer.shadowOpacity = 0
@@ -97,6 +99,7 @@ class MainPadView: UIView {
                 let tone = tones[index]
 
                 let button = createToneButton(title: tone.displayName, tag: index)
+                toneButtons.append(button)
                 rowStack.addArrangedSubview(button)
             }
 
@@ -141,7 +144,7 @@ class MainPadView: UIView {
 
     
     //STYLES
-    private func createPadButton(backgroundImageName: String, size: CGFloat, tag: Int) -> UIButton {
+    func createPadButton(backgroundImageName: String, size: CGFloat, tag: Int) -> UIButton {
         let button = UIButton(type: .custom)
 
         // Imagem de fundo personalizada
@@ -158,7 +161,7 @@ class MainPadView: UIView {
         return button
     }
     
-    private func setupPadButtons() {
+    func setupPadButtons() {
         padScrollView.showsHorizontalScrollIndicator = false
 
         padStackView.axis = .horizontal
@@ -182,6 +185,7 @@ class MainPadView: UIView {
 
         for (index, style) in PadStyle.allCases.enumerated() {
             let button = createPadButton(backgroundImageName: backgroundImages[index], size: buttonWidth, tag: index)
+            padButtons.append(button)
 
             let label = UILabel()
             label.text = style.rawValue
@@ -198,7 +202,7 @@ class MainPadView: UIView {
         }
     }
     
-    private func createPadButton(icon: String, size: CGFloat, tag: Int) -> UIButton {
+    func createPadButton(icon: String, size: CGFloat, tag: Int) -> UIButton {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: icon)
         

@@ -6,7 +6,7 @@
 //
 import UIKit
 
-enum PadStyle: String, CaseIterable {
+enum PadStyle: String, CaseIterable, Codable {
     case Base
     case Shimmer
     case Shiny
@@ -16,12 +16,12 @@ enum PadStyle: String, CaseIterable {
     
     var color: UIColor {
         switch self {
-        case .Base: return UIColor(hex: "#7C3AED")
-        case .Shimmer: return UIColor(hex: "#FACC15")
-        case .Shiny: return UIColor(hex: "#38BDF8")
-        case .Warm: return UIColor(hex: "#A62F03")
-        case .Reverse: return UIColor(hex: "#9512A6")
-        case .Vassal: return UIColor(hex: "#077322")
+        case .Base: return UIColor(hex: "#64A1FA")
+        case .Shimmer: return UIColor(hex: "#FB5DB9")
+        case .Shiny: return UIColor(hex: "#FECC2D")
+        case .Warm: return UIColor(hex: "#0626C9")
+        case .Reverse: return UIColor(hex: "#CF4ED7")
+        case .Vassal: return UIColor(hex: "#B4FF88")
         }
     }
 }

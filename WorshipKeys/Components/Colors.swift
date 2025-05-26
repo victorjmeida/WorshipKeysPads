@@ -11,6 +11,7 @@ enum Colors {
 
     //Background
     static let background = UIColor(hexCode: "#0C0C0C") ?? .black
+    static let backgroundSecond = UIColor(hexCode: "#0B0B0B") ?? .black
     
     //Highlights
     static let primaryHighlight = UIColor(hexCode: "#FF6A00") ?? .orange

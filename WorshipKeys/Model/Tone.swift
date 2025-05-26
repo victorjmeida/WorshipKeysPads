@@ -5,7 +5,7 @@
 //  Created by João VIctir da Silva Almeida on 06/05/25.
 //
 
-enum Tone: CaseIterable {
+enum Tone: CaseIterable, Codable {
     case C, CSharp, D, DSharp, E, F, FSharp, G, GSharp, A, ASharp, B
 
     var displayName: String {

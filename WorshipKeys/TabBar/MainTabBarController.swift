@@ -11,6 +11,8 @@ class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setValue(CustomTabBar(), forKey: "tabBar")
         setupTabBar()
         setupViewControllers()
     }
@@ -23,18 +25,18 @@ class MainTabBarController: UITabBarController {
     
     private func setupViewControllers(){
         
-        let fxVC = UIViewController()
-        fxVC.view.backgroundColor = .black
-        fxVC.tabBarItem = UITabBarItem(title: "Setlist", image: UIImage(systemName: "music.note.list"), tag: 0)
+        let setlistVC = SetlistViewController()
+        let setlistNav = UINavigationController(rootViewController: setlistVC)
+        setlistNav.tabBarItem = UITabBarItem(title: "Setlist", image: UIImage(systemName: "music.note.list"), tag: 0)
         
-        let homeVC = MainPadViewController()
+        let homeVC = UINavigationController(rootViewController: MainPadViewController())
         homeVC.tabBarItem = UITabBarItem(title: "Pads", image: UIImage(systemName: "lightspectrum.horizontal"), tag: 1)
-        
-        let settingsVC = UIViewController()
-        settingsVC.view.backgroundColor = .black
+
+        let settingsVC = UINavigationController(rootViewController: SettingsViewController())
         settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape"), tag: 2)
+
         
-        viewControllers = [fxVC, homeVC, settingsVC]
+        viewControllers = [setlistNav, homeVC, settingsVC]
         selectedIndex = 1
     }
 
