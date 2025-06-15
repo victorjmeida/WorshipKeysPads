@@ -94,7 +94,33 @@ class MainPadViewController: UIViewController {
 
     @objc private func padTapped(_ sender: UIButton) {
         let style = PadStyle.allCases[sender.tag]
+
+        // Se o estilo for premium e o usuário não for premium, abre direto a tela de upgrade
+        if style.isPremium && !PremiumAccess.isUnlocked {
+            let premiumVC = PremiumViewController()
+            premiumVC.modalPresentationStyle = .formSheet
+            present(premiumVC, animated: true)
+            return
+        }
+
         viewModel.selectPadStyle(style)
+    }
+    
+    func showPremiumAlert() {
+        let alert = UIAlertController(
+            title: "Estilo Premium",
+            message: "Esse estilo faz parte do Worship Premium.",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "Desbloquear", style: .default) { _ in
+            let premiumVC = PremiumViewController()
+            premiumVC.modalPresentationStyle = .formSheet
+            self.present(premiumVC, animated: true)
+        })
+
+        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+        present(alert, animated: true)
     }
 
     @objc private func lowCutChanged(_ sender: UISlider) {

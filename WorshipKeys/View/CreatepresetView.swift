@@ -49,9 +49,15 @@ class CreatePresetView: UIView {
     
     // MARK: - Element Configuration
     private func configureElements() {
-        nameTextField.placeholder = "Nome do preset"
+        nameTextField.placeholder = "Preset name..."
         nameTextField.borderStyle = .roundedRect
-        nameTextField.backgroundColor = .lightGray
+        nameTextField.backgroundColor = .white
+        nameTextField.textColor = .darkGray
+        nameTextField.attributedPlaceholder = NSAttributedString(
+            string: "Preset name...",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+        )
+
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         
         tonesStackView.axis = .vertical

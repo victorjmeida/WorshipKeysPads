@@ -10,7 +10,7 @@ import UIKit
 enum Colors {
 
     //Background
-    static let background = UIColor(hexCode: "#0C0C0C") ?? .black
+    static let background = UIColor(hexCode: "#0A0A0A") ?? .black
     static let backgroundSecond = UIColor(hexCode: "#0B0B0B") ?? .black
     
     //Highlights

@@ -16,8 +16,14 @@ class SettingsViewModel {
     static let shared = SettingsViewModel() // singleton
 
     var fadeInDuration: TimeInterval {
-        get { UserDefaults.standard.double(forKey: fadeKey).clamped(to: 0.0...3.0) }
-        set { UserDefaults.standard.setValue(newValue, forKey: fadeKey) }
+        get {
+            let value = UserDefaults.standard.double(forKey: fadeKey)
+            return (value == 0) ? 0.0 : value.clamped(to: 0.0...3.0)
+        }
+        set {
+            let clamped = newValue.clamped(to: 0.0...3.0)
+            UserDefaults.standard.setValue(clamped, forKey: fadeKey)
+        }
     }
 
     var masterVolume: Float {

@@ -26,6 +26,17 @@ enum PadStyle: String, CaseIterable, Codable {
     }
 }
 
+extension PadStyle {
+    var isPremium: Bool {
+        switch self {
+        case .Base:
+            return false
+        default:
+            return true
+        }
+    }
+}
+
 extension UIColor {
     convenience init(hex: String, alpha: CGFloat = 1.0) {
         let hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "#", with: "")

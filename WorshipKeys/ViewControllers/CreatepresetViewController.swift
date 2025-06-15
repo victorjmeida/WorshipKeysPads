@@ -28,6 +28,9 @@ class CreatePresetViewController: UIViewController {
         setupToneButtons()
         setupPadStyleButtons()
         mainView.saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,5 +113,9 @@ class CreatePresetViewController: UIViewController {
 
         onPresetCreated?(item)
         dismiss(animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 class SettingsViewController: UIViewController {
 
     private let mainView = SettingsView()
-    private let viewModel = SettingsViewModel()
+    private let viewModel = SettingsViewModel.shared
 
     private let fadeValueLabel = UILabel()
 
@@ -26,8 +26,31 @@ class SettingsViewController: UIViewController {
         setupInitialValues()
         setupActions()
         setupFadeLabel()
+        addPadGuideCards()
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
+
+    private func addPadGuideCards() {
+        let guideCards: [(String, String, String)] = [
+            ("pad_base", "Base", "A smooth and balanced pad for seamless transitions."),
+            ("pad_shimmer", "Shimmer", "Bright and airy pad with shimmering textures."),
+            ("pad_shiny", "Shiny", "Crisp and luminous pad, perfect for uplifting moments."),
+            ("pad_warm", "Warm", "Warm and deep pad ideal for intimate atmospheres."),
+            ("pad_reverse", "Reverse", "Experimental pad with reverse-like textures."),
+            ("pad_vassal", "Vassal", "Full-bodied pad with rich low-end and ambient depth.")
+        ]
+
+        for (iconName, title, description) in guideCards {
+            let image = UIImage(named: iconName) ?? UIImage(systemName: iconName) ?? UIImage()
+            let card = PadGuideCardView(
+                icon: image,
+                title: title,
+                description: description
+            )
+            mainView.padGuideStack.addArrangedSubview(card)
+        }
+    }
+
 
     private func setupInitialValues() {
         mainView.volumeSlider.value = viewModel.masterVolume
@@ -53,13 +76,20 @@ class SettingsViewController: UIViewController {
         ])
     }
 
+    
+
+    
     private func updateFadeLabel(with value: TimeInterval) {
         fadeValueLabel.text = String(format: "%.1fs", value)
     }
 
     @objc private func volumeChanged(_ sender: UISlider) {
         viewModel.setMasterVolume(sender.value)
-        padViewModel.updateMasterVolume()
+        
+        // Só atualiza se o pad já estiver tocando
+        if padViewModel.isPadPlaying {
+            padViewModel.updateMasterVolume(sender.value)
+        }
     }
 
     @objc private func crossfadeChanged(_ sender: UISlider) {

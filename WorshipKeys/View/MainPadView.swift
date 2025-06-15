@@ -9,7 +9,9 @@ import UIKit
 
 class MainPadView: UIView {
     
-    //MARK: - UIElements
+    // MARK: - UIElements
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     let padPlayingBar = UIView()
     let tonesStackView = UIStackView()
     let padScrollView = UIScrollView()
@@ -41,7 +43,7 @@ class MainPadView: UIView {
                 }
             }
         }
-        
+
         for container in padStackView.arrangedSubviews {
             if let stack = container as? UIStackView,
                let button = stack.arrangedSubviews.first as? UIButton {
@@ -79,7 +81,7 @@ class MainPadView: UIView {
     //TONES
     private func setupToneButtons() {
         tonesStackView.axis = .vertical
-        tonesStackView.spacing = 16
+        tonesStackView.spacing = 8
         tonesStackView.distribution = .fillEqually
 
         let tones = Tone.allCases
@@ -88,10 +90,10 @@ class MainPadView: UIView {
         for rowIndex in stride(from: 0, to: tones.count, by: tonesPerRow) {
             let rowStack = UIStackView()
             rowStack.axis = .horizontal
-            rowStack.spacing = 16
+            rowStack.spacing = 8
             rowStack.distribution = .fillEqually
             rowStack.translatesAutoresizingMaskIntoConstraints = false
-            rowStack.heightAnchor.constraint(equalToConstant: 80).isActive = true
+            rowStack.heightAnchor.constraint(equalToConstant: 92).isActive = true
 
             for column in 0..<tonesPerRow {
                 let index = rowIndex + column
@@ -110,7 +112,7 @@ class MainPadView: UIView {
     private func createToneButton(title: String, tag: Int) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 30, weight: .medium)
+        button.titleLabel?.font = .systemFont(ofSize: 34, weight: .medium)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = defaultToneButtonColor
         button.layer.cornerRadius = 8
@@ -230,9 +232,9 @@ class MainPadView: UIView {
         highCutLabel.textColor = .white
         highCutLabel.font = .systemFont(ofSize: 16, weight: .medium)
         
-        highCutSlider.minimumValue = -18
-        highCutSlider.maximumValue = 0
-        highCutSlider.value = 0
+        highCutSlider.minimumValue = 1000
+        highCutSlider.maximumValue = 8000
+        highCutSlider.value = 4500
         highCutSlider.tintColor = .lightGray
         
         //LOWCUT
@@ -242,7 +244,7 @@ class MainPadView: UIView {
         
         lowCutSlider.minimumValue = 20
         lowCutSlider.maximumValue = 600
-        lowCutSlider.value = 20
+        lowCutSlider.value = 310
         lowCutSlider.tintColor = .lightGray
         
         // Agrupar cada controle em uma stack horizontal
@@ -263,55 +265,81 @@ class MainPadView: UIView {
 //MARK: Constrains e Hierarchy
 extension MainPadView {
     
+    // MARK: - Setup
     private func setupView() {
         setHierarchy()
         setupPadPlayingBar()
         setupToneButtons()
-        
         setupPadButtons()
         setupCutControls()
         setConstraints()
     }
     
+    // MARK: - Hierarquia
     private func setHierarchy() {
-        addSubview(padPlayingBar)
-        addSubview(tonesStackView)
-        addSubview(padScrollView)
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+
+        [padPlayingBar, tonesStackView, padScrollView, cutControlStackView].forEach {
+            contentView.addSubview($0)
+        }
+
         padScrollView.addSubview(padStackView)
-        addSubview(cutControlStackView)
     }
     
+    // MARK: - Constraints
     private func setConstraints() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         tonesStackView.translatesAutoresizingMaskIntoConstraints = false
         padScrollView.translatesAutoresizingMaskIntoConstraints = false
         padStackView.translatesAutoresizingMaskIntoConstraints = false
-            
+
         NSLayoutConstraint.activate([
-            tonesStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 52),
-            tonesStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            tonesStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-                
-            padScrollView.topAnchor.constraint(equalTo: tonesStackView.bottomAnchor, constant: 42),
-            padScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            padScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            // ScrollView ocupa toda a tela
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            // ContentView dentro da ScrollView
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            // Barra de toque
+            padPlayingBar.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            padPlayingBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            padPlayingBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            padPlayingBar.heightAnchor.constraint(equalToConstant: 14),
+
+            // Stack dos tons
+            tonesStackView.topAnchor.constraint(equalTo: padPlayingBar.bottomAnchor, constant: 38),
+            tonesStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            tonesStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            // Scroll horizontal dos pads
+            padScrollView.topAnchor.constraint(equalTo: tonesStackView.bottomAnchor, constant: 32),
+            padScrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            padScrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             padScrollView.heightAnchor.constraint(equalToConstant: 140),
-                
+
             padStackView.topAnchor.constraint(equalTo: padScrollView.topAnchor),
             padStackView.bottomAnchor.constraint(equalTo: padScrollView.bottomAnchor),
             padStackView.leadingAnchor.constraint(equalTo: padScrollView.leadingAnchor, constant: 24),
             padStackView.trailingAnchor.constraint(equalTo: padScrollView.trailingAnchor, constant: -24),
             padStackView.heightAnchor.constraint(equalTo: padScrollView.heightAnchor),
-                
-            // cutControlStackView.topAnchor.constraint(equalTo: padScrollView.bottomAnchor, constant: 32),
-            cutControlStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            cutControlStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            cutControlStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -48),
-            
-            padPlayingBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            padPlayingBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            padPlayingBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            padPlayingBar.heightAnchor.constraint(equalToConstant: 12)
+
+            // EQ Controls
+            cutControlStackView.topAnchor.constraint(equalTo: padScrollView.bottomAnchor, constant: 32),
+            cutControlStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            cutControlStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            contentView.bottomAnchor.constraint(equalTo: cutControlStackView.bottomAnchor, constant: 48)
         ])
     }
+
 }
 

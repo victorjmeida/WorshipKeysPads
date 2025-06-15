@@ -1,10 +1,3 @@
-//
-//  SettingsView.swift
-//  WorshipKeys
-//
-//  Created by João VIctir da Silva Almeida on 16/05/25.
-//
-
 import UIKit
 
 class SettingsView: UIView {
@@ -25,7 +18,7 @@ class SettingsView: UIView {
     let crossfadeLabel = UILabel()
     let crossfadeSlider = UISlider()
 
-    let padGuideTitle = UILabel()
+    let labelGuidePads = UILabel()
     let padGuideStack = UIStackView()
 
     let aboutLabel = UILabel()
@@ -78,7 +71,14 @@ class SettingsView: UIView {
         crossfadeSlider.value = 0
         crossfadeSlider.tintColor = .lightGray
 
-        aboutLabel.text = "WorshipKeys v1.0\nBy João Victor Almeida"
+        labelGuidePads.text = "Pads Style"
+        labelGuidePads.textColor = .white
+        labelGuidePads.font = .systemFont(ofSize: 18, weight: .semibold)
+
+        padGuideStack.axis = .vertical
+        padGuideStack.spacing = 12
+
+        aboutLabel.text = "WorshipKeys v1.0\nJohn 14:6\nBy João Victor Almeida"
         aboutLabel.textAlignment = .center
         aboutLabel.textColor = .darkGray
         aboutLabel.font = .systemFont(ofSize: 13)
@@ -90,14 +90,22 @@ class SettingsView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
 
-        [titleLabel,
-         controlsContainer,
-         crossfadeContainer,
-         padGuideTitle, padGuideStack,
-         aboutLabel].forEach { contentView.addSubview($0) }
+        [
+            titleLabel,
+            controlsContainer,
+            crossfadeContainer,
+            labelGuidePads,
+            padGuideStack,
+            aboutLabel
+        ].forEach { contentView.addSubview($0) }
 
-        [volumeLabel, volumeSlider, outputLabel, outputSelector].forEach { controlsContainer.addSubview($0) }
-        [crossfadeLabel, crossfadeSlider].forEach { crossfadeContainer.addSubview($0) }
+        [volumeLabel, volumeSlider, outputLabel, outputSelector].forEach {
+            controlsContainer.addSubview($0)
+        }
+
+        [crossfadeLabel, crossfadeSlider].forEach {
+            crossfadeContainer.addSubview($0)
+        }
     }
 
     // MARK: - Constraints
@@ -105,9 +113,12 @@ class SettingsView: UIView {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
-        let views = [titleLabel,
-                     controlsContainer, volumeLabel, volumeSlider, outputLabel, outputSelector,
-                     crossfadeContainer, crossfadeLabel, crossfadeSlider, aboutLabel]
+        let views = [
+            titleLabel, controlsContainer,
+            volumeLabel, volumeSlider, outputLabel, outputSelector,
+            crossfadeContainer, crossfadeLabel, crossfadeSlider,
+            labelGuidePads, padGuideStack, aboutLabel
+        ]
 
         views.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
 
@@ -157,12 +168,17 @@ class SettingsView: UIView {
             crossfadeSlider.trailingAnchor.constraint(equalTo: crossfadeContainer.trailingAnchor, constant: -16),
             crossfadeSlider.bottomAnchor.constraint(equalTo: crossfadeContainer.bottomAnchor, constant: -28),
 
-            aboutLabel.topAnchor.constraint(equalTo: crossfadeContainer.bottomAnchor, constant: 40),
+            labelGuidePads.topAnchor.constraint(equalTo: crossfadeContainer.bottomAnchor, constant: 28),
+            labelGuidePads.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            padGuideStack.topAnchor.constraint(equalTo: labelGuidePads.bottomAnchor, constant: 16),
+            padGuideStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            padGuideStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            aboutLabel.topAnchor.constraint(equalTo: padGuideStack.bottomAnchor, constant: 40),
             aboutLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             aboutLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ])
     }
 }
-
-
 
