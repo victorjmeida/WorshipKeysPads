@@ -51,10 +51,12 @@ class MainPadViewModel {
         audioEngine.connect(eq, to: audioEngine.mainMixerNode, format: outputFormat)
 
         do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
             try audioEngine.start()
             print("✅ Audio engine started")
         } catch {
-            print("❌ Falha ao iniciar audio engine: \(error.localizedDescription)")
+                print("❌ Falha ao iniciar audio engine: \(error.localizedDescription)")
         }
     }
 

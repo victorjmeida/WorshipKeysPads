@@ -23,6 +23,7 @@ class MainPadView: UIView {
     let lowCutSlider = UISlider()
     var toneButtons: [UIButton] = []
     var padButtons: [UIButton] = []
+    let defaultPadButtonColor = UIColor(hex: "#2C2C2E")
     let defaultToneButtonColor = UIColor(hex: "#505050")
     
     //MARK: - INIT
@@ -135,15 +136,25 @@ class MainPadView: UIView {
         }
     }
 
-    func resetButtonAppearance(_ button: UIButton?) {
+    func resetToneButtonAppearance(_ button: UIButton?) {
         guard let button = button else { return }
-        
-        UIView.animate(withDuration: 0.6) {
+
+        UIView.animate(withDuration: 0.3) {
             button.backgroundColor = self.defaultToneButtonColor
+            button.setTitleColor(.white, for: .normal)
             button.layer.shadowOpacity = 0
         }
     }
+    
+    func resetPadButtonAppearance(_ button: UIButton?) {
+        guard let button = button else { return }
 
+        UIView.animate(withDuration: 0.3) {
+            button.backgroundColor = .clear
+            button.setTitleColor(.lightGray, for: .normal)
+            button.layer.shadowOpacity = 0
+        }
+    }
     
     //STYLES
     func createPadButton(backgroundImageName: String, size: CGFloat, tag: Int) -> UIButton {

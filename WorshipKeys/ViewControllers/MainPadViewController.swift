@@ -47,11 +47,16 @@ class MainPadViewController: UIViewController {
     }
 
     private func bindViewModel() {
+        // Atualização visual dos botões de tom
         viewModel.onToneChanged = { [weak self] selectedTone in
             guard let self = self else { return }
 
-            self.mainView.resetButtonAppearance(self.selectedToneButton)
+            // Reseta todos os botões de tom
+            self.mainView.toneButtons.forEach {
+                self.mainView.resetToneButtonAppearance($0)
+            }
 
+            // Destaca o botão selecionado
             if let tone = selectedTone,
                let index = Tone.allCases.firstIndex(of: tone) {
                 let button = self.mainView.toneButtons[index]
@@ -62,11 +67,16 @@ class MainPadViewController: UIViewController {
             }
         }
 
+        // Atualização visual dos botões de estilo de pad
         viewModel.onPadChanged = { [weak self] selectedStyle in
             guard let self = self else { return }
 
-            self.mainView.resetButtonAppearance(self.selectedPadButton)
+            // Reseta todos os botões de pad
+            self.mainView.padButtons.forEach {
+                self.mainView.resetPadButtonAppearance($0)
+            }
 
+            // Destaca o botão selecionado
             if let style = selectedStyle,
                let index = PadStyle.allCases.firstIndex(of: style) {
                 let button = self.mainView.padButtons[index]

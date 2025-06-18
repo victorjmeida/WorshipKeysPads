@@ -80,7 +80,7 @@ class SettingsView: UIView {
 
         aboutLabel.text = "WorshipKeys v1.0\nJohn 14:6\nBy João Victor Almeida"
         aboutLabel.textAlignment = .center
-        aboutLabel.textColor = .darkGray
+        aboutLabel.textColor = .lightGray
         aboutLabel.font = .systemFont(ofSize: 13)
         aboutLabel.numberOfLines = 0
     }

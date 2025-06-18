@@ -32,12 +32,12 @@ class SettingsViewController: UIViewController {
 
     private func addPadGuideCards() {
         let guideCards: [(String, String, String)] = [
-            ("pad_base", "Base", "A smooth and balanced pad for seamless transitions."),
-            ("pad_shimmer", "Shimmer", "Bright and airy pad with shimmering textures."),
-            ("pad_shiny", "Shiny", "Crisp and luminous pad, perfect for uplifting moments."),
-            ("pad_warm", "Warm", "Warm and deep pad ideal for intimate atmospheres."),
-            ("pad_reverse", "Reverse", "Experimental pad with reverse-like textures."),
-            ("pad_vassal", "Vassal", "Full-bodied pad with rich low-end and ambient depth.")
+            ("pad_base", "Base", "A filling and calm sound that will make the bed for your playing."),
+            ("pad_shimmer", "Shimmer", "Bright and strong, like a sharp arrow to create layers in your playing."),
+            ("pad_shiny", "Shiny", "Crisp and bright, perfect for inspiring uplifting moments and calm foundations."),
+            ("pad_warm", "Warm", "Loud as thunder, the perfect sound to create strength and fill every band in your song."),
+            ("pad_reverse", "Reverse", "Sound-based and effects to bring deep ideas to your musical construction."),
+            ("pad_vassal", "Vassal", "Strong as a multi-voiced choir, this sound takes your music to a higher level.")
         ]
 
         for (iconName, title, description) in guideCards {
