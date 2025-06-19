@@ -34,9 +34,10 @@
 ## 📸 Screenshots
 
 <p float="left">
-  <img src="Assets/screenshot1.png" width="200">
-  <img src="Assets/screenshot2.png" width="200">
-  <img src="Assets/screenshot3.png" width="200">
+  <img src="Screenshots/cap1.png" width="200">
+  <img src="Screenshots/cap2.png" width="200">
+  <img src="Screenshots/cap3.png" width="200">
+  <img src="Screenshots/cap4.png" width="200">
 </p>
 
 ---
