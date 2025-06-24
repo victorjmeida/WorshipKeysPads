@@ -15,6 +15,7 @@ class MainPadViewController: UIViewController {
     private var selectedToneButton: UIButton?
     private var selectedPadButton: UIButton?
     
+    // Para garantir que o preset só será aplicado quando a tela estiver ativa
     private var pendingPreset: SetlistItem?
 
     override func loadView() {
@@ -28,35 +29,37 @@ class MainPadViewController: UIViewController {
             toneAction: #selector(toneTapped(_:)),
             padAction: #selector(padTapped(_:))
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applyPresetFromNotification(_:)),
+            name: .setlistPresetSelected,
+            object: nil
+        )
         setupSliderActions()
         bindViewModel()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if let preset = pendingPreset {
-            applyAndPlay(preset)
-            pendingPreset = nil
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Aplica o preset pendente (caso venha de outra tela)
+        if let preset = pendingPreset {
+            applyAndPlay(preset)
+            pendingPreset = nil
+        }
+    }
 
+    // MARK: - Bindings
+    
     private func bindViewModel() {
         // Atualização visual dos botões de tom
         viewModel.onToneChanged = { [weak self] selectedTone in
             guard let self = self else { return }
-
-            // Reseta todos os botões de tom
-            self.mainView.toneButtons.forEach {
-                self.mainView.resetToneButtonAppearance($0)
-            }
-
-            // Destaca o botão selecionado
+            self.mainView.toneButtons.forEach { self.mainView.resetToneButtonAppearance($0) }
             if let tone = selectedTone,
                let index = Tone.allCases.firstIndex(of: tone) {
                 let button = self.mainView.toneButtons[index]
@@ -66,17 +69,10 @@ class MainPadViewController: UIViewController {
                 self.selectedToneButton = nil
             }
         }
-
-        // Atualização visual dos botões de estilo de pad
+        // Atualização visual dos botões de pad
         viewModel.onPadChanged = { [weak self] selectedStyle in
             guard let self = self else { return }
-
-            // Reseta todos os botões de pad
-            self.mainView.padButtons.forEach {
-                self.mainView.resetPadButtonAppearance($0)
-            }
-
-            // Destaca o botão selecionado
+            self.mainView.padButtons.forEach { self.mainView.resetPadButtonAppearance($0) }
             if let style = selectedStyle,
                let index = PadStyle.allCases.firstIndex(of: style) {
                 let button = self.mainView.padButtons[index]
@@ -104,15 +100,10 @@ class MainPadViewController: UIViewController {
 
     @objc private func padTapped(_ sender: UIButton) {
         let style = PadStyle.allCases[sender.tag]
-
-        // Se o estilo for premium e o usuário não for premium, abre direto a tela de upgrade
         if style.isPremium && !PremiumAccess.isUnlocked {
-            let premiumVC = PremiumViewController()
-            premiumVC.modalPresentationStyle = .formSheet
-            present(premiumVC, animated: true)
+            showPremiumAlert()
             return
         }
-
         viewModel.selectPadStyle(style)
     }
     
@@ -122,13 +113,11 @@ class MainPadViewController: UIViewController {
             message: "Esse estilo faz parte do Worship Premium.",
             preferredStyle: .alert
         )
-
         alert.addAction(UIAlertAction(title: "Desbloquear", style: .default) { _ in
             let premiumVC = PremiumViewController()
             premiumVC.modalPresentationStyle = .formSheet
             self.present(premiumVC, animated: true)
         })
-
         alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
         present(alert, animated: true)
     }
@@ -140,11 +129,36 @@ class MainPadViewController: UIViewController {
     @objc private func highCutChanged(_ sender: UISlider) {
         viewModel.setHighCut(sender.value)
     }
+    
+    // MARK: - Notificação de Preset Selecionado
+
+    @objc private func applyPresetFromNotification(_ notification: Notification) {
+        print("MainPad recebeu notificação!")
+        guard let preset = notification.object as? SetlistItem else { return }
+        print("Preset recebido:", preset.name)
+        // Se a tela está visível, aplica na hora; se não, marca para aplicar depois
+        if isViewLoaded && view.window != nil {
+            applyAndPlay(preset)
+        } else {
+            pendingPreset = preset
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
+
+// MARK: - Aplicar Preset
 
 extension MainPadViewController {
     func applyPreset(_ preset: SetlistItem) {
-        pendingPreset = preset
+        // Se a tela está visível, aplica imediatamente; se não, agenda
+        if isViewLoaded && view.window != nil {
+            applyAndPlay(preset)
+        } else {
+            pendingPreset = preset
+        }
     }
     
     private func applyAndPlay(_ preset: SetlistItem) {
@@ -152,17 +166,15 @@ extension MainPadViewController {
             let toneButton = mainView.toneButtons[toneIndex]
             toneTapped(toneButton)
         }
-
         if let padIndex = PadStyle.allCases.firstIndex(of: preset.padStyle) {
             let padButton = mainView.padButtons[padIndex]
             padTapped(padButton)
         }
-
         mainView.lowCutSlider.setValue(preset.lowCut, animated: true)
         mainView.highCutSlider.setValue(preset.highCut, animated: true)
         lowCutChanged(mainView.lowCutSlider)
         highCutChanged(mainView.highCutSlider)
     }
-
 }
+
 

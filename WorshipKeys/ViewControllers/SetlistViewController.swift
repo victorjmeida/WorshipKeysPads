@@ -11,7 +11,7 @@ class SetlistViewController: UIViewController {
 
     private let mainView = SetlistView()
     private let viewModel = SetlistViewModel()
-
+    
     override func loadView() {
         self.view = mainView
     }
@@ -54,15 +54,11 @@ class SetlistViewController: UIViewController {
 
     func presentCreatePreset() {
         let createVC = CreatePresetViewController()
-
         createVC.onPresetCreated = { [weak self] preset in
             self?.viewModel.addItem(preset)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self?.navigateToMainPad(with: preset)
-            }
+            // Só recarrega a tabela, não navega!
+            self?.mainView.tableView.reloadData()
         }
-
         present(createVC, animated: true)
     }
 
@@ -104,8 +100,14 @@ extension SetlistViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let preset = viewModel.item(at: indexPath.row)
-        print("Preset selecionado: \(preset.name)")
-        navigateToMainPad(with: preset)
+        NotificationCenter.default.post(name: .setlistPresetSelected, object: preset)
+        
+        // Volta para a raiz da pilha de navegação da Setlist (caso tenha empilhado algo nela)
+        navigationController?.popToRootViewController(animated: false)
+        
+        // Troca para a MainPad (índice da aba MainPad, normalmente 0)
+        tabBarController?.selectedIndex = 1
+        print("Enviando notificação para preset:", preset.name)
     }
 }
 
