@@ -15,89 +15,121 @@ class PremiumView: UIView {
     let subtitleLabel = UILabel()
     let benefitsStack = UIStackView()
     let buyButton = UIButton(type: .system)
+    let restoreButton = UIButton(type: .system)
+
+    // MARK: - Texts (para manutenção e tradução futura)
+    private let logoName = "WorshipKeysBack"
+    private let titleText = "Unlock Worship Keys"
+    private let subtitleText = "Full access to the best pad styles for your sound and extra features."
+    private let benefits: [String] = [
+        "Five more pad styles",
+        "Shimmer, Shiny, Warm, Reverse, Vassal",
+        "Your most professional ministrations",
+        "Future updates included"
+    ]
+    private let buyButtonTitle = "Unlock Now"
+    private let restoreButtonTitle = "Restore Purchase"
 
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = Colors.background
-        setupView()
-        setHierarchy()
-        setConstraints()
+        configure()
+        buildHierarchy()
+        setupConstraints()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Setup
-    private func setupView() {
-        
-        logoApp.image = UIImage(named: "WorshipKeysBack")
+    // MARK: - Configure
+    private func configure() {
+        configureLogo()
+        configureTitle()
+        configureSubtitle()
+        configureBenefitsStack()
+        configureBuyButton()
+        configureRestoreButton()
+    }
+
+    private func configureLogo() {
+        logoApp.image = .worshipKeys
         logoApp.contentMode = .scaleAspectFit
         logoApp.clipsToBounds = true
         logoApp.layer.cornerRadius = 4
-        
-        titleLabel.text = "Unlock Worship Keys"
+    }
+
+    private func configureTitle() {
+        titleLabel.text = titleText
         titleLabel.textColor = .white
         titleLabel.font = .boldSystemFont(ofSize: 24)
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
+    }
 
-        subtitleLabel.text = "Full access to the best pad styles for your sound and extra features."
+    private func configureSubtitle() {
+        subtitleLabel.text = subtitleText
         subtitleLabel.textColor = .lightGray
         subtitleLabel.font = .systemFont(ofSize: 18)
         subtitleLabel.textAlignment = .center
         subtitleLabel.numberOfLines = 0
+    }
 
+    private func configureBenefitsStack() {
         benefitsStack.axis = .vertical
         benefitsStack.spacing = 12
         benefitsStack.alignment = .leading
+        benefitsStack.distribution = .equalSpacing
+        benefitsStack.arrangedSubviews.forEach { benefitsStack.removeArrangedSubview($0); $0.removeFromSuperview() }
+        benefits.forEach { addBenefit($0) }
+    }
 
-        let benefits = [
-            "Five more pad styles",
-            "Shimmer, Shiny, Warm, Reverse, Vassal",
-            "Your most professional ministrations",
-            "Future updates included"
-        ]
+    private func addBenefit(_ text: String) {
+        let label = UILabel()
+        label.text = "• \(text)"
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 16)
+        label.numberOfLines = 0
+        benefitsStack.addArrangedSubview(label)
+    }
 
-        for benefit in benefits {
-            let label = UILabel()
-            label.text = "• \(benefit)"
-            label.textColor = .lightGray
-            label.font = .systemFont(ofSize: 16)
-            label.numberOfLines = 0
-            benefitsStack.addArrangedSubview(label)
-        }
-
-        buyButton.setTitle("Unlock Now", for: .normal)
+    private func configureBuyButton() {
+        buyButton.setTitle(buyButtonTitle, for: .normal)
         buyButton.setTitleColor(.white, for: .normal)
         buyButton.titleLabel?.font = .boldSystemFont(ofSize: 22)
         buyButton.backgroundColor = UIColor(hex: "#815778")
         buyButton.layer.cornerRadius = 10
         buyButton.clipsToBounds = true
-
     }
 
-    // MARK: - Hierarquia
-    private func setHierarchy() {
+    private func configureRestoreButton() {
+        restoreButton.setTitle(restoreButtonTitle, for: .normal)
+        restoreButton.setTitleColor(.white, for: .normal)
+        restoreButton.titleLabel?.font = .systemFont(ofSize: 16)
+        restoreButton.backgroundColor = .clear
+    }
+
+    // MARK: - Hierarchy
+    private func buildHierarchy() {
         addSubview(logoApp)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(benefitsStack)
         addSubview(buyButton)
+        addSubview(restoreButton)
     }
 
     // MARK: - Constraints
-    private func setConstraints() {
-        [logoApp, titleLabel, subtitleLabel, benefitsStack, buyButton].forEach {
+    private func setupConstraints() {
+        [logoApp, titleLabel, subtitleLabel, benefitsStack, buyButton, restoreButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-
         NSLayoutConstraint.activate([
             logoApp.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
             logoApp.centerXAnchor.constraint(equalTo: centerXAnchor),
             logoApp.heightAnchor.constraint(equalToConstant: 260),
             logoApp.widthAnchor.constraint(equalToConstant: 260),
-            
+
             titleLabel.topAnchor.constraint(equalTo: logoApp.bottomAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
@@ -115,6 +147,9 @@ class PremiumView: UIView {
             buyButton.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             buyButton.heightAnchor.constraint(equalToConstant: 50),
 
+            restoreButton.topAnchor.constraint(equalTo: buyButton.bottomAnchor, constant: 8),
+            restoreButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            restoreButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 }
@@ -125,3 +160,4 @@ class PremiumView: UIView {
     PremiumView()
 })
 #endif
+
