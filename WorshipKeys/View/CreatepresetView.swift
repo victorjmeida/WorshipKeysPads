@@ -27,6 +27,9 @@ class CreatePresetView: UIView {
     
     let defaultToneButtonColor = UIColor.darkGray
     
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -104,15 +107,17 @@ class CreatePresetView: UIView {
     
     // MARK: - Hierarchy
     private func setHierarchy() {
-        addSubview(nameTextField)
-        addSubview(tonesStackView)
-        addSubview(padScrollView)
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(nameTextField)
+        contentView.addSubview(tonesStackView)
+        contentView.addSubview(padScrollView)
         padScrollView.addSubview(padStackView)
-        addSubview(lowCutLabel)
-        addSubview(lowCutSlider)
-        addSubview(highCutLabel)
-        addSubview(highCutSlider)
-        addSubview(saveButton)
+        contentView.addSubview(lowCutLabel)
+        contentView.addSubview(lowCutSlider)
+        contentView.addSubview(highCutLabel)
+        contentView.addSubview(highCutSlider)
+        contentView.addSubview(saveButton)
     }
     
     // MARK: - Tone Buttons
@@ -207,46 +212,66 @@ class CreatePresetView: UIView {
     }
     
         // MARK: - Constraints
-        private func setConstraints() {
-            NSLayoutConstraint.activate([
-                nameTextField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 18),
-                nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-                nameTextField.heightAnchor.constraint(equalToConstant: 44),
-                
-                tonesStackView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 22),
-                tonesStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                tonesStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-                
-                padScrollView.topAnchor.constraint(equalTo: tonesStackView.bottomAnchor, constant: 22),
-                padScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                padScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                padScrollView.heightAnchor.constraint(equalToConstant: 140),
-                
-                padStackView.topAnchor.constraint(equalTo: padScrollView.topAnchor),
-                padStackView.bottomAnchor.constraint(equalTo: padScrollView.bottomAnchor),
-                padStackView.leadingAnchor.constraint(equalTo: padScrollView.leadingAnchor, constant: 24),
-                padStackView.trailingAnchor.constraint(equalTo: padScrollView.trailingAnchor, constant: -24),
-                padStackView.heightAnchor.constraint(equalTo: padScrollView.heightAnchor),
-                
-                lowCutLabel.topAnchor.constraint(equalTo: padScrollView.bottomAnchor, constant: 24),
-                lowCutLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                
-                lowCutSlider.topAnchor.constraint(equalTo: lowCutLabel.bottomAnchor, constant: 8),
-                lowCutSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                lowCutSlider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-                
-                highCutLabel.topAnchor.constraint(equalTo: lowCutSlider.bottomAnchor, constant: 24),
-                highCutLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                
-                highCutSlider.topAnchor.constraint(equalTo: highCutLabel.bottomAnchor, constant: 8),
-                highCutSlider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                highCutSlider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-                
-                saveButton.topAnchor.constraint(equalTo: highCutSlider.bottomAnchor, constant: 28),
-                saveButton.centerXAnchor.constraint(equalTo: centerXAnchor)
-            ])
-        }
+    private func setConstraints() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            // ScrollView ocupa a tela toda (usando safeAreaLayoutGuide)
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            
+            // contentView preenche o scrollView (ESSENCIAL!)
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        ])
+
+        NSLayoutConstraint.activate([
+            nameTextField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
+            nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            nameTextField.heightAnchor.constraint(equalToConstant: 44),
+
+            tonesStackView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 22),
+            tonesStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            tonesStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+
+            padScrollView.topAnchor.constraint(equalTo: tonesStackView.bottomAnchor, constant: 22),
+            padScrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            padScrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            padScrollView.heightAnchor.constraint(equalToConstant: 140),
+
+            padStackView.topAnchor.constraint(equalTo: padScrollView.topAnchor),
+            padStackView.bottomAnchor.constraint(equalTo: padScrollView.bottomAnchor),
+            padStackView.leadingAnchor.constraint(equalTo: padScrollView.leadingAnchor, constant: 24),
+            padStackView.trailingAnchor.constraint(equalTo: padScrollView.trailingAnchor, constant: -24),
+            padStackView.heightAnchor.constraint(equalTo: padScrollView.heightAnchor),
+
+            lowCutLabel.topAnchor.constraint(equalTo: padScrollView.bottomAnchor, constant: 24),
+            lowCutLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+
+            lowCutSlider.topAnchor.constraint(equalTo: lowCutLabel.bottomAnchor, constant: 8),
+            lowCutSlider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            lowCutSlider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+
+            highCutLabel.topAnchor.constraint(equalTo: lowCutSlider.bottomAnchor, constant: 24),
+            highCutLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+
+            highCutSlider.topAnchor.constraint(equalTo: highCutLabel.bottomAnchor, constant: 8),
+            highCutSlider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            highCutSlider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+
+            saveButton.topAnchor.constraint(equalTo: highCutSlider.bottomAnchor, constant: 28),
+            saveButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            saveButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32) // ESSENCIAL PARA O SCROLL!
+        ])
+    }
+
         
         // MARK: - Visual Feedback
         func highlightButton(_ button: UIButton?) {

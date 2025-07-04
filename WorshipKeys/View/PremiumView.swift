@@ -53,7 +53,7 @@ class PremiumView: UIView {
     }
 
     private func configureLogo() {
-        logoApp.image = .worshipKeys
+        logoApp.image = .exclusive
         logoApp.contentMode = .scaleAspectFit
         logoApp.clipsToBounds = true
         logoApp.layer.cornerRadius = 4
