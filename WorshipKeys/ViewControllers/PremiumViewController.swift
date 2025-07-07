@@ -49,7 +49,7 @@ class PremiumViewController: UIViewController {
                 await purchasePremiumPads()
             }
         } else {
-            showAlert(title: "Atenção", message: "A compra exige iOS 15 ou superior.")
+            showAlert(title: "Attention", message: "Purchase requires iOS 15 or later.")
         }
     }
 
@@ -59,18 +59,17 @@ class PremiumViewController: UIViewController {
                 await restorePurchases()
             }
         } else {
-            showAlert(title: "Atenção", message: "A restauração exige iOS 15 ou superior.")
+            showAlert(title: "Attention", message: "Restore requires iOS 15 or later.")
         }
     }
 
     // MARK: - StoreKit 2
-
     @available(iOS 15.0, *)
     private func purchasePremiumPads() async {
         do {
             let products = try await Product.products(for: [premiumProductID])
             guard let product = products.first else {
-                showAlert(title: "Erro", message: "Produto não encontrado.")
+                showAlert(title: "Error", message: "Product not found.")
                 return
             }
 
@@ -84,15 +83,15 @@ class PremiumViewController: UIViewController {
                         self.dismiss(animated: true)
                     }
                 case .unverified:
-                    showAlert(title: "Erro", message: "Não foi possível verificar a compra.")
+                    showAlert(title: "Error", message: "Unable to verify purchase.")
                 }
             case .userCancelled:
-                break // Usuário cancelou, não faz nada
+                break
             default:
-                showAlert(title: "Erro", message: "Não foi possível concluir a compra.")
+                showAlert(title: "Error", message: "Unable to complete purchase.")
             }
         } catch {
-            showAlert(title: "Erro", message: error.localizedDescription)
+            showAlert(title: "Error", message: error.localizedDescription)
         }
     }
 
@@ -111,8 +110,8 @@ class PremiumViewController: UIViewController {
             }
         }
         showAlert(
-            title: found ? "Restaurado!" : "Nenhuma compra encontrada",
-            message: found ? "Premium restaurado com sucesso!" : "Você não possui compras para restaurar."
+            title: found ? "Restored!" : "No purchases found.",
+            message: found ? "Premium successfully restored!" : "You have no purchases to restore."
         )
     }
 
@@ -128,7 +127,6 @@ class PremiumViewController: UIViewController {
     }
 }
 
-// Global helper (pode estar em outro arquivo)
 struct PremiumAccess {
     static var isUnlocked: Bool {
         return UserDefaults.standard.bool(forKey: "isPremiumUser")

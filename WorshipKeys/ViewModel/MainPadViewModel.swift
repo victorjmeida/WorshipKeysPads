@@ -171,8 +171,8 @@ class MainPadViewModel {
         var currentStep = 0
 
         playerNode.stop()
+        playerNode.volume = 0
         playerNode.scheduleBuffer(buffer, at: nil, options: .loops)
-        playerNode.volume = volume
         playerNode.play()
 
         if fadeIn {
@@ -187,7 +187,27 @@ class MainPadViewModel {
                 }
             }
             RunLoop.main.add(fadeTimer!, forMode: .common)
+        } else {
+            // Se não for fade, coloque o volume só depois do play para evitar pop
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.playerNode.volume = targetVolume
+            }
         }
+    }
+
+    func reactivateAudioIfNeeded() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+            if !audioEngine.isRunning {
+                try audioEngine.start()
+                print("🔄 AudioEngine restarted")
+            }
+        } catch {
+            print("❌ Falha ao reativar audio: \(error.localizedDescription)")
+        }
+        // Tenta tocar o áudio novamente (se houver seleção)
+        tryPlayAudio()
     }
 
     func updateMasterVolume(_ volume: Float) {

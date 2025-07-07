@@ -37,8 +37,16 @@ class SetlistView: UIView {
         // Botão adicionar
         addButton.setTitle("Add Preset", for: .normal)
         addButton.setTitleColor(.white, for: .normal)
-        addButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-
+        addButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        addButton.backgroundColor = UIColor.white.withAlphaComponent(0.10) // Sutil, respeita o fundo
+        addButton.layer.cornerRadius = 10
+        addButton.clipsToBounds = true
+        addButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 14, bottom: 6, right: 14)
+        addButton.layer.shadowColor = UIColor.black.cgColor
+        addButton.layer.shadowOpacity = 0.10
+        addButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        addButton.layer.shadowRadius = 3
+        
         // Tabela
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none

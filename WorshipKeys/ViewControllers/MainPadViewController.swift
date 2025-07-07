@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class MainPadViewController: UIViewController {
     
@@ -14,9 +15,10 @@ class MainPadViewController: UIViewController {
     
     private var selectedToneButton: UIButton?
     private var selectedPadButton: UIButton?
-    
-    // Para garantir que o preset só será aplicado quando a tela estiver ativa
     private var pendingPreset: SetlistItem?
+    
+    private let AVAudioSessionInterruptionTypeKey = "AVAudioSessionInterruptionTypeKey"
+    private let AVAudioSessionInterruptionOptionKey = "AVAudioSessionInterruptionOptionKey"
 
     override func loadView() {
         self.view = mainView
@@ -33,6 +35,19 @@ class MainPadViewController: UIViewController {
             self,
             selector: #selector(applyPresetFromNotification(_:)),
             name: .setlistPresetSelected,
+            object: nil
+        )
+        // Observers para retomada de áudio após interrupções/background
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppBecameActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAudioSessionInterruption(_:)),
+            name: AVAudioSession.interruptionNotification,
             object: nil
         )
         setupSliderActions()
@@ -53,6 +68,20 @@ class MainPadViewController: UIViewController {
         }
     }
 
+    // MARK: - Retomada de áudio ao voltar do background/interrupção
+    @objc private func handleAppBecameActive() {
+        MainPadViewModel.shared.reactivateAudioIfNeeded()
+    }
+    
+    @objc private func handleAudioSessionInterruption(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+        if type == .ended {
+            MainPadViewModel.shared.reactivateAudioIfNeeded()
+        }
+    }
+    
     // MARK: - Bindings
     
     private func bindViewModel() {
@@ -101,25 +130,13 @@ class MainPadViewController: UIViewController {
     @objc private func padTapped(_ sender: UIButton) {
         let style = PadStyle.allCases[sender.tag]
         if style.isPremium && !PremiumAccess.isUnlocked {
-            showPremiumAlert()
-            return
-        }
-        viewModel.selectPadStyle(style)
-    }
-    
-    func showPremiumAlert() {
-        let alert = UIAlertController(
-            title: "Estilo Premium",
-            message: "Esse estilo faz parte do Worship Premium.",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "Desbloquear", style: .default) { _ in
+            // Vai direto para tela de compra
             let premiumVC = PremiumViewController()
             premiumVC.modalPresentationStyle = .formSheet
             self.present(premiumVC, animated: true)
-        })
-        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
-        present(alert, animated: true)
+            return
+        }
+        viewModel.selectPadStyle(style)
     }
 
     @objc private func lowCutChanged(_ sender: UISlider) {
@@ -176,5 +193,4 @@ extension MainPadViewController {
         highCutChanged(mainView.highCutSlider)
     }
 }
-
 

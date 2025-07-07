@@ -18,7 +18,7 @@ class SettingsViewModel {
     var fadeInDuration: TimeInterval {
         get {
             let value = UserDefaults.standard.double(forKey: fadeKey)
-            return (value == 0) ? 0.0 : value.clamped(to: 0.0...3.0)
+            return (value == 0) ? 1.0 : value.clamped(to: 0.0...3.0)
         }
         set {
             let clamped = newValue.clamped(to: 0.0...3.0)
