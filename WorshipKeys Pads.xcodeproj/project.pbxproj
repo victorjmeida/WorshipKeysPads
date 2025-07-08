@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92B563322DC9D6B300488DC8 /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92B563312DC9D6B300488DC8 /* Pads */; };
+		92D375162E1D9DB500C2FC4F /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92D375152E1D9DB500C2FC4F /* Pads */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9227F6182DA8A67F0020FCF2 /* WorshipKeys Pads.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WorshipKeys Pads.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		92B563312DC9D6B300488DC8 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
+		92D375152E1D9DB500C2FC4F /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Pads; path = ../../Downloads/Pads; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -34,6 +34,11 @@
 			path = WorshipKeys;
 			sourceTree = "<group>";
 		};
+		92D374CD2E1D9DA500C2FC4F /* Pads */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Pads;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,9 +55,10 @@
 		9227F60F2DA8A67F0020FCF2 = {
 			isa = PBXGroup;
 			children = (
-				92B563312DC9D6B300488DC8 /* Pads */,
+				92D375152E1D9DB500C2FC4F /* Pads */,
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
 				9227F6192DA8A67F0020FCF2 /* Products */,
+				92D374CD2E1D9DA500C2FC4F /* Pads */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,6 +87,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
+				92D374CD2E1D9DA500C2FC4F /* Pads */,
 			);
 			name = "WorshipKeys Pads";
 			packageProductDependencies = (
@@ -128,7 +135,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92B563322DC9D6B300488DC8 /* Pads in Resources */,
+				92D375162E1D9DB500C2FC4F /* Pads in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +160,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ZUU3G9L3R8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WorshipKeys/Info.plist;
@@ -168,7 +175,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = Joao.Almeida.WorshipKeys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -186,7 +193,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ZUU3G9L3R8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WorshipKeys/Info.plist;
@@ -201,7 +208,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = Joao.Almeida.WorshipKeys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

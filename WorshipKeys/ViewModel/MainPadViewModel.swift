@@ -91,14 +91,15 @@ class MainPadViewModel {
 
     private func playPad(tone: Tone, style: PadStyle) {
         let fileName = "\(tone.fileName)_\(style.rawValue)"
-        let path = "Pads/\(style.rawValue)/\(fileName).caf"
-        let fileURL = Bundle.main.bundleURL.appendingPathComponent(path)
-        currentPlayingFileURL = fileURL
+        let folderPath = "Pads/\(style.rawValue)"
 
-        guard FileManager.default.fileExists(atPath: fileURL.path) else {
-            print("⚠️ Áudio não encontrado: \(fileName)")
+        // Busca o arquivo no bundle, dentro da subpasta (pasta azul/folder reference)
+        guard let fileURL = Bundle.main.url(forResource: fileName, withExtension: "caf", subdirectory: folderPath) else {
+            print("⚠️ Áudio não encontrado: \(fileName).caf em \(folderPath)")
             return
         }
+        currentPlayingFileURL = fileURL
+        print("🔍 Procurando arquivo em: \(fileURL.path)")
 
         do {
             let audioFile = try AVAudioFile(forReading: fileURL)
@@ -132,6 +133,7 @@ class MainPadViewModel {
             print("❌ Erro ao carregar áudio: \(error.localizedDescription)")
         }
     }
+
 
     private func playWithFade(to newBuffer: AVAudioPCMBuffer) {
         fadeTimer?.invalidate()
