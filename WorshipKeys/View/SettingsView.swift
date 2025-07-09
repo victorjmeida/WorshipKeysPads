@@ -78,7 +78,7 @@ class SettingsView: UIView {
         padGuideStack.axis = .vertical
         padGuideStack.spacing = 12
 
-        aboutLabel.text = "WorshipKeys v1.0\nJohn 14:6\nBy João Victor Almeida"
+        aboutLabel.text = "WorshipKeys v1.2\nJohn 14:6\nBy João Victor Almeida"
         aboutLabel.textAlignment = .center
         aboutLabel.textColor = .lightGray
         aboutLabel.font = .systemFont(ofSize: 13)
