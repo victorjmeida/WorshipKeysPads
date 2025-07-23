@@ -335,7 +335,7 @@ extension MainPadView {
             padScrollView.topAnchor.constraint(equalTo: tonesStackView.bottomAnchor, constant: 32),
             padScrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             padScrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            padScrollView.heightAnchor.constraint(equalToConstant: 140),
+            padScrollView.heightAnchor.constraint(equalToConstant: 160),
 
             padStackView.topAnchor.constraint(equalTo: padScrollView.topAnchor),
             padStackView.bottomAnchor.constraint(equalTo: padScrollView.bottomAnchor),

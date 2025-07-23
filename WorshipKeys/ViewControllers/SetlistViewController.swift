@@ -100,12 +100,11 @@ extension SetlistViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let preset = viewModel.item(at: indexPath.row)
+        //Envia infos de uma tableView para a Home.
         NotificationCenter.default.post(name: .setlistPresetSelected, object: preset)
         
-        // Volta para a raiz da pilha de navegação da Setlist (caso tenha empilhado algo nela)
         navigationController?.popToRootViewController(animated: false)
         
-        // Troca para a MainPad (índice da aba MainPad, normalmente 0)
         tabBarController?.selectedIndex = 1
         print("Enviando notificação para preset:", preset.name)
     }

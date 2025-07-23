@@ -31,25 +31,29 @@ class MainPadViewController: UIViewController {
             toneAction: #selector(toneTapped(_:)),
             padAction: #selector(padTapped(_:))
         )
+        
+        //Recebe quando um preset for selecionado, sem que as telas se conhecam diretamente.
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applyPresetFromNotification(_:)),
             name: .setlistPresetSelected,
             object: nil
         )
-        // Observers para retomada de áudio após interrupções/background
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleAppBecameActive),
             name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleAudioSessionInterruption(_:)),
             name: AVAudioSession.interruptionNotification,
             object: nil
         )
+        
         setupSliderActions()
         bindViewModel()
     }
