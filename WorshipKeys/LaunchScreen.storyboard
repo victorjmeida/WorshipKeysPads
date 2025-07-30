@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WorshipKeys Pads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZI-MP-Vj5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="WorshipKeys Pads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZI-MP-Vj5">
                                 <rect key="frame" x="104.33333333333333" y="496" width="184.66666666666669" height="26"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                 <color key="textColor" red="0.86237373737373735" green="0.86237373737373735" blue="0.86237373737373735" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -27,23 +27,22 @@
                                 <color key="textColor" red="0.86237373740000001" green="0.86237373740000001" blue="0.86237373740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WorshipKeys" translatesAutoresizingMaskIntoConstraints="NO" id="zZy-RR-pik">
-                                <rect key="frame" x="76.666666666666686" y="256" width="240" height="240"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="6dO-S5-Wch">
+                                <rect key="frame" x="76.666666666666686" y="246" width="240" height="240"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="Rov-Wf-S1R"/>
-                                    <constraint firstAttribute="height" constant="240" id="rdP-x4-22a"/>
+                                    <constraint firstAttribute="width" constant="240" id="d2o-AH-SSG"/>
+                                    <constraint firstAttribute="height" constant="240" id="qbp-nT-Fec"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="6dO-S5-Wch" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" constant="-60" id="1MF-if-DSi"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="981-be-kTH" secondAttribute="bottom" constant="40" id="4uZ-yb-5Hf"/>
-                            <constraint firstItem="zZy-RR-pik" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="JCf-UJ-7Qy"/>
+                            <constraint firstItem="6dO-S5-Wch" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Dav-cK-nrS"/>
                             <constraint firstItem="981-be-kTH" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="JK5-hP-uNo"/>
-                            <constraint firstItem="zZy-RR-pik" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" constant="-50" id="ZMF-wR-EXD"/>
                             <constraint firstItem="GZI-MP-Vj5" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="ZlB-Sc-NKh"/>
-                            <constraint firstItem="GZI-MP-Vj5" firstAttribute="top" secondItem="zZy-RR-pik" secondAttribute="bottom" id="z1t-wa-PVR"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -53,6 +52,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="WorshipKeys" width="1024" height="1024"/>
+        <image name="LaunchLogo" width="1280" height="1280"/>
     </resources>
 </document>

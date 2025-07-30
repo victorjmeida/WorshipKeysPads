@@ -46,7 +46,7 @@ class MainPadViewModel {
         audioEngine.attach(playerNode)
         audioEngine.attach(eq)
 
-        let outputFormat = audioEngine.outputNode.inputFormat(forBus: 0)
+        let outputFormat = audioEngine.mainMixerNode.inputFormat(forBus: 0)
         audioEngine.connect(playerNode, to: eq, format: outputFormat)
         audioEngine.connect(eq, to: audioEngine.mainMixerNode, format: outputFormat)
 
