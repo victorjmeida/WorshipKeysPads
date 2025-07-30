@@ -11,18 +11,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9227F6182DA8A67F0020FCF2 /* WorshipKeys Pads.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WorshipKeys Pads.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9227F6182DA8A67F0020FCF2 /* WorshipKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorshipKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92F39D3C2E319F5000D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Pads; path = ../../Pads; sourceTree = "<group>"; };
 		92F39D3E2E319F9200D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9227F62A2DA8A6800020FCF2 /* Exceptions for "WorshipKeys" folder in "WorshipKeys Pads" target */ = {
+		9227F62A2DA8A6800020FCF2 /* Exceptions for "WorshipKeys" folder in "WorshipKeys" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 9227F6172DA8A67F0020FCF2 /* WorshipKeys Pads */;
+			target = 9227F6172DA8A67F0020FCF2 /* WorshipKeys */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -30,7 +30,7 @@
 		9227F61A2DA8A67F0020FCF2 /* WorshipKeys */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9227F62A2DA8A6800020FCF2 /* Exceptions for "WorshipKeys" folder in "WorshipKeys Pads" target */,
+				9227F62A2DA8A6800020FCF2 /* Exceptions for "WorshipKeys" folder in "WorshipKeys" target */,
 			);
 			path = WorshipKeys;
 			sourceTree = "<group>";
@@ -67,7 +67,7 @@
 		9227F6192DA8A67F0020FCF2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9227F6182DA8A67F0020FCF2 /* WorshipKeys Pads.app */,
+				9227F6182DA8A67F0020FCF2 /* WorshipKeys.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,9 +75,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9227F6172DA8A67F0020FCF2 /* WorshipKeys Pads */ = {
+		9227F6172DA8A67F0020FCF2 /* WorshipKeys */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9227F62B2DA8A6800020FCF2 /* Build configuration list for PBXNativeTarget "WorshipKeys Pads" */;
+			buildConfigurationList = 9227F62B2DA8A6800020FCF2 /* Build configuration list for PBXNativeTarget "WorshipKeys" */;
 			buildPhases = (
 				9227F6142DA8A67F0020FCF2 /* Sources */,
 				9227F6152DA8A67F0020FCF2 /* Frameworks */,
@@ -91,11 +91,11 @@
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
 				92D374CD2E1D9DA500C2FC4F /* Pads */,
 			);
-			name = "WorshipKeys Pads";
+			name = WorshipKeys;
 			packageProductDependencies = (
 			);
 			productName = WorshipKeys;
-			productReference = 9227F6182DA8A67F0020FCF2 /* WorshipKeys Pads.app */;
+			productReference = 9227F6182DA8A67F0020FCF2 /* WorshipKeys.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -113,7 +113,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9227F6132DA8A67F0020FCF2 /* Build configuration list for PBXProject "WorshipKeys Pads" */;
+			buildConfigurationList = 9227F6132DA8A67F0020FCF2 /* Build configuration list for PBXProject "WorshipKeys" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -127,7 +127,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9227F6172DA8A67F0020FCF2 /* WorshipKeys Pads */,
+				9227F6172DA8A67F0020FCF2 /* WorshipKeys */,
 			);
 		};
 /* End PBXProject section */
@@ -342,7 +342,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9227F6132DA8A67F0020FCF2 /* Build configuration list for PBXProject "WorshipKeys Pads" */ = {
+		9227F6132DA8A67F0020FCF2 /* Build configuration list for PBXProject "WorshipKeys" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9227F62E2DA8A6800020FCF2 /* Debug */,
@@ -351,7 +351,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9227F62B2DA8A6800020FCF2 /* Build configuration list for PBXNativeTarget "WorshipKeys Pads" */ = {
+		9227F62B2DA8A6800020FCF2 /* Build configuration list for PBXNativeTarget "WorshipKeys" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9227F62C2DA8A6800020FCF2 /* Debug */,

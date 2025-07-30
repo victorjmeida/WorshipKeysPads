@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9227F6172DA8A67F0020FCF2"
-               BuildableName = "WorshipKeys Pads.app"
-               BlueprintName = "WorshipKeys Pads"
-               ReferencedContainer = "container:WorshipKeys Pads.xcodeproj">
+               BuildableName = "WorshipKeys.app"
+               BlueprintName = "WorshipKeys"
+               ReferencedContainer = "container:WorshipKeys.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9227F6172DA8A67F0020FCF2"
-            BuildableName = "WorshipKeys Pads.app"
-            BlueprintName = "WorshipKeys Pads"
-            ReferencedContainer = "container:WorshipKeys Pads.xcodeproj">
+            BuildableName = "WorshipKeys.app"
+            BlueprintName = "WorshipKeys"
+            ReferencedContainer = "container:WorshipKeys.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9227F6172DA8A67F0020FCF2"
-            BuildableName = "WorshipKeys Pads.app"
-            BlueprintName = "WorshipKeys Pads"
-            ReferencedContainer = "container:WorshipKeys Pads.xcodeproj">
+            BuildableName = "WorshipKeys.app"
+            BlueprintName = "WorshipKeys"
+            ReferencedContainer = "container:WorshipKeys.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
