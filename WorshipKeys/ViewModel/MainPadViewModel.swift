@@ -20,8 +20,10 @@ class MainPadViewModel {
     private let playerNode = AVAudioPlayerNode()
     private let eq = AVAudioUnitEQ(numberOfBands: 2)
     private var currentPlayingFileURL: URL?
-
     private var fadeTimer: Timer?
+
+    /// Use sempre este formato (2 canais pois o simulador força 2)
+    private let forcedOutputFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
 
     private init() {
         setupAudioEngine()
@@ -29,6 +31,17 @@ class MainPadViewModel {
 
     // MARK: - Setup Engine
     private func setupAudioEngine() {
+        let audioSession = AVAudioSession.sharedInstance()
+        print("DEBUG - AVAudioSession hardwareSampleRate:", audioSession.sampleRate)
+        do {
+            try audioSession.setCategory(.playback, mode: .default)
+            try audioSession.setPreferredSampleRate(44100)
+            try audioSession.setActive(true, options: [])
+            print("DEBUG - AVAudioSession sampleRate: \(audioSession.sampleRate)")
+        } catch {
+            print("❌ Erro ao configurar AVAudioSession: \(error)")
+        }
+
         eq.globalGain = 0
 
         let lowCut = eq.bands[0]
@@ -46,19 +59,9 @@ class MainPadViewModel {
         audioEngine.attach(playerNode)
         audioEngine.attach(eq)
 
-        // --- CONFIGURA A SESSÃO ANTES DE PEGAR O FORMATO ---
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setPreferredSampleRate(44100)
-            try audioSession.setCategory(.playback, mode: .default, options: [])
-            try audioSession.setActive(true)
-        } catch {
-            print("❌ Erro ao configurar AVAudioSession: \(error)")
-        }
-
-        // Agora sim, depois de garantir a sessão ativa, pegue o formato:
-        let outputFormat = audioEngine.mainMixerNode.inputFormat(forBus: 0)
-        print("DEBUG - Output Sample Rate: \(outputFormat.sampleRate)")
+        // Use sempre o formato forçado de 44100Hz
+        let outputFormat = forcedOutputFormat
+        print("DEBUG - Forçando outputFormat: \(outputFormat.sampleRate)")
 
         audioEngine.connect(playerNode, to: eq, format: outputFormat)
         audioEngine.connect(eq, to: audioEngine.mainMixerNode, format: outputFormat)
@@ -70,7 +73,6 @@ class MainPadViewModel {
             print("❌ Falha ao iniciar audio engine: \(error.localizedDescription)")
         }
     }
-
 
     // MARK: - Seleções
     func selectTone(_ tone: Tone) {
@@ -90,7 +92,6 @@ class MainPadViewModel {
             stopAudio()
             return
         }
-
         playPad(tone: tone, style: style)
     }
 
@@ -106,16 +107,14 @@ class MainPadViewModel {
         let folderPath = "Pads/\(style.rawValue)"
 
         guard let fileURL = Bundle.main.url(forResource: fileName, withExtension: "caf", subdirectory: folderPath) else {
-            print("⚠️ Áudio não encontrado: \(fileName).caf em \(folderPath)")
             return
         }
         currentPlayingFileURL = fileURL
-        print("🔍 Procurando arquivo em: \(fileURL.path)")
 
         do {
             let audioFile = try AVAudioFile(forReading: fileURL)
             let inputFormat = audioFile.processingFormat
-            let outputFormat = audioEngine.mainMixerNode.outputFormat(forBus: 0)
+            let outputFormat = forcedOutputFormat // <----- use o forçado!
             print("DEBUG - inputFormat sampleRate: \(inputFormat.sampleRate), outputFormat sampleRate: \(outputFormat.sampleRate)")
 
             // Lê o áudio original
@@ -208,7 +207,6 @@ class MainPadViewModel {
         }
     }
 
-
     func reactivateAudioIfNeeded() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
@@ -235,7 +233,6 @@ class MainPadViewModel {
     func setHighCut(_ frequency: Float) {
         eq.bands[1].frequency = frequency
     }
-
 
     var isPadPlaying: Bool {
         return playerNode.isPlaying

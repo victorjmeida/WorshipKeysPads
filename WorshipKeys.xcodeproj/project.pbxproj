@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92F3A6142E3C711500D44283 /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92F3A6132E3C711500D44283 /* Pads */; };
+		92F3A7602E3DADF000D44283 /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92F3A75F2E3DADF000D44283 /* Pads */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9227F6182DA8A67F0020FCF2 /* WorshipKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorshipKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		92F3A6132E3C711500D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
+		92F3A75F2E3DADF000D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,7 +50,7 @@
 		9227F60F2DA8A67F0020FCF2 = {
 			isa = PBXGroup;
 			children = (
-				92F3A6132E3C711500D44283 /* Pads */,
+				92F3A75F2E3DADF000D44283 /* Pads */,
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
 				9227F6192DA8A67F0020FCF2 /* Products */,
 			);
@@ -128,7 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92F3A6142E3C711500D44283 /* Pads in Resources */,
+				92F3A7602E3DADF000D44283 /* Pads in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,7 +168,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = Joao.Almeida.WorshipKeys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -201,7 +201,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = Joao.Almeida.WorshipKeys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
