@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92F39D3F2E319F9200D44283 /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92F39D3E2E319F9200D44283 /* Pads */; };
+		92F3A6142E3C711500D44283 /* Pads in Resources */ = {isa = PBXBuildFile; fileRef = 92F3A6132E3C711500D44283 /* Pads */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9227F6182DA8A67F0020FCF2 /* WorshipKeys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorshipKeys.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		92F39D3C2E319F5000D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Pads; path = ../../Pads; sourceTree = "<group>"; };
-		92F39D3E2E319F9200D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
+		92F3A6132E3C711500D44283 /* Pads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pads; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -35,11 +34,6 @@
 			path = WorshipKeys;
 			sourceTree = "<group>";
 		};
-		92D374CD2E1D9DA500C2FC4F /* Pads */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Pads;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,11 +50,9 @@
 		9227F60F2DA8A67F0020FCF2 = {
 			isa = PBXGroup;
 			children = (
-				92F39D3C2E319F5000D44283 /* Pads */,
-				92F39D3E2E319F9200D44283 /* Pads */,
+				92F3A6132E3C711500D44283 /* Pads */,
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
 				9227F6192DA8A67F0020FCF2 /* Products */,
-				92D374CD2E1D9DA500C2FC4F /* Pads */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,7 +81,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				9227F61A2DA8A67F0020FCF2 /* WorshipKeys */,
-				92D374CD2E1D9DA500C2FC4F /* Pads */,
 			);
 			name = WorshipKeys;
 			packageProductDependencies = (
@@ -137,7 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92F39D3F2E319F9200D44283 /* Pads in Resources */,
+				92F3A6142E3C711500D44283 /* Pads in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

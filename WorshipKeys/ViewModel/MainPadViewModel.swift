@@ -46,19 +46,31 @@ class MainPadViewModel {
         audioEngine.attach(playerNode)
         audioEngine.attach(eq)
 
+        // --- CONFIGURA A SESSÃO ANTES DE PEGAR O FORMATO ---
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setPreferredSampleRate(44100)
+            try audioSession.setCategory(.playback, mode: .default, options: [])
+            try audioSession.setActive(true)
+        } catch {
+            print("❌ Erro ao configurar AVAudioSession: \(error)")
+        }
+
+        // Agora sim, depois de garantir a sessão ativa, pegue o formato:
         let outputFormat = audioEngine.mainMixerNode.inputFormat(forBus: 0)
+        print("DEBUG - Output Sample Rate: \(outputFormat.sampleRate)")
+
         audioEngine.connect(playerNode, to: eq, format: outputFormat)
         audioEngine.connect(eq, to: audioEngine.mainMixerNode, format: outputFormat)
 
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
-            try AVAudioSession.sharedInstance().setActive(true)
             try audioEngine.start()
             print("✅ Audio engine started")
         } catch {
-                print("❌ Falha ao iniciar audio engine: \(error.localizedDescription)")
+            print("❌ Falha ao iniciar audio engine: \(error.localizedDescription)")
         }
     }
+
 
     // MARK: - Seleções
     func selectTone(_ tone: Tone) {
@@ -93,7 +105,6 @@ class MainPadViewModel {
         let fileName = "\(tone.fileName)_\(style.rawValue)"
         let folderPath = "Pads/\(style.rawValue)"
 
-        // Busca o arquivo no bundle, dentro da subpasta (pasta azul/folder reference)
         guard let fileURL = Bundle.main.url(forResource: fileName, withExtension: "caf", subdirectory: folderPath) else {
             print("⚠️ Áudio não encontrado: \(fileName).caf em \(folderPath)")
             return
@@ -105,35 +116,35 @@ class MainPadViewModel {
             let audioFile = try AVAudioFile(forReading: fileURL)
             let inputFormat = audioFile.processingFormat
             let outputFormat = audioEngine.mainMixerNode.outputFormat(forBus: 0)
+            print("DEBUG - inputFormat sampleRate: \(inputFormat.sampleRate), outputFormat sampleRate: \(outputFormat.sampleRate)")
 
-            let converter = AVAudioConverter(from: inputFormat, to: outputFormat)
-
+            // Lê o áudio original
             let inputBuffer = AVAudioPCMBuffer(pcmFormat: inputFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
             try audioFile.read(into: inputBuffer)
 
+            // Sempre converte (mesmo sample rate igual, só para garantir)
+            let converter = AVAudioConverter(from: inputFormat, to: outputFormat)!
             let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: inputBuffer.frameCapacity)!
-
             var error: NSError?
             let inputBlock: AVAudioConverterInputBlock = { inNumPackets, outStatus in
                 outStatus.pointee = .haveData
                 return inputBuffer
             }
-
-            converter?.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
-
+            converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputBlock)
             if let error = error {
                 print("❌ Erro na conversão: \(error.localizedDescription)")
                 return
             }
+            print("DEBUG - Buffer convertido. outputFormat sampleRate: \(convertedBuffer.format.sampleRate)")
 
             playWithFade(to: convertedBuffer)
             onAudioStarted?()
+            print("DEBUG - Tocando buffer do arquivo: \(fileName).caf")
 
         } catch {
             print("❌ Erro ao carregar áudio: \(error.localizedDescription)")
         }
     }
-
 
     private func playWithFade(to newBuffer: AVAudioPCMBuffer) {
         fadeTimer?.invalidate()
@@ -196,6 +207,7 @@ class MainPadViewModel {
             }
         }
     }
+
 
     func reactivateAudioIfNeeded() {
         do {
